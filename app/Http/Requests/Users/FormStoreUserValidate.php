@@ -25,7 +25,9 @@ class FormStoreUserValidate extends FormRequest
             'name'=>'required|string|max:20|min:3',
             'email'=>'required|email:rfc,dns|unique:users,email',
             'password'=>'required|min:8',
-            'rol'=>'required|in:admin,profesor,estudiante,egresado',            
+            'rol'=>'required|in:admin,profesor,estudiante,egresado',     
+            'dni'=>'required|digits:8|unique:users,dni',
+            'telefono'=>'required|digits:9|unique:users,telefono'       
         ];
     }
 }
