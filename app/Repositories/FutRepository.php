@@ -10,7 +10,7 @@ class FutRepository implements FutRepositoryInterface
 {
     public function searchByDni($dni)
     {
-        return Fut::where('dni',$dni)->first();
+        return Fut::where('documento_identidad',$dni)->first();
     }
     public function createNew($data)
     {
