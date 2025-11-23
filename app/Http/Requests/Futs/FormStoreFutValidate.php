@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Futs;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class FormStoreFutValidate extends FormRequest
 {
@@ -42,5 +44,13 @@ class FormStoreFutValidate extends FormRequest
             'turno'=>'nullable|in:dia,noche',
             'ciclo'=>'nullable|in:I,II,III,IV,V,VI',
         ];
+    }
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'status' => 'error',
+            'message' => 'Validación fallida',
+            'errors' => $validator->errors()
+        ], 422));
     }
 }
