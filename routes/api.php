@@ -13,8 +13,8 @@ Route::controller(UserController::class)->group(function (){
     Route::post('/verify/user','verify')->name('users.verify');
 });
 
+//Mensaje
 //RUTAS PARA FUTS
-
 Route::controller(FutController::class)->group(function () {
     Route::post('/fut/store','store')->name('futs.store');
     Route::get('/fut/search','show')->name('futs.show');
