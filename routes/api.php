@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CarpetaController;
 use App\Http\Controllers\FutController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -21,6 +22,11 @@ Route::controller(FutController::class)->group(function () {
 });
 
 
+//RUTAS PARA CARPETAS
+Route::controller(CarpetaController::class)->group(function () {
+    Route::post('/carpeta/create','store');
+    Route::post('/carpeta/add-info/hoja-aceptacion','addAceptacion');
+});
 
 
 Route::get('/user', function (Request $request) {

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 class HjAceptacion extends Model
 {
     protected $table = 'table_hoja_aceptacion_practicas_preprofesionales';
+    
     protected $fillable = [
         'carpeta_id',
         'fecha',

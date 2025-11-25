@@ -2,7 +2,9 @@
 
 namespace App\Http\Requests\Carpetas;
 
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Http\Exceptions\HttpResponseException;
 
 class FormStoreCarpetaValidate extends FormRequest
 {
@@ -25,5 +27,13 @@ class FormStoreCarpetaValidate extends FormRequest
             'usuario_id'=>'required|integer|exists:users,id',
             'profesor_id'=>'required|integer|exists:users,id'
         ];
+    }
+    public function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response()->json([
+            'status'=>'error',
+            'massage'=>'Validacion fallida',
+            'errors'=> $validator->errors() 
+        ],422));
     }
 }

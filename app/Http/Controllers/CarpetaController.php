@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Carpetas\FormStoreCarpetaValidate;
 use App\Http\Requests\Hojas\FormStoreHjAceptacionValidate;
 use App\Services\CarpetaService;
 use Illuminate\Http\Request;
@@ -15,8 +16,20 @@ class CarpetaController extends Controller
         $this->carpetaService = $carpetaService;
     }
 
-    public function store($data){
-        return $this->carpetaService->createNewCarpeta($data);        
+    public function store(FormStoreCarpetaValidate $request){
+        $data = $request->validated();
+        $carpeta = $this->carpetaService->createNewCarpeta($data);
+        if(!$carpeta){
+            return response()->json([
+                'status'=>'error',
+                'response'=> 'Ha ocurrido un error al crear la carpeta'                
+            ],400);
+        }
+        return response()->json([
+            'status'=>'success',
+            'response'=> 'Carpeta de practicas creada',
+            'data'=>$carpeta
+        ],201);
     }
 
     public function show($dni){

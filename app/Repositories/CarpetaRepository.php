@@ -3,13 +3,19 @@
 namespace App\Repositories;
 
 use App\Interfaces\CarpetaRepositoryInterface;
+use App\Models\Carpeta;
 use App\Models\HjAceptacion;
 
 class CarpetaRepository implements CarpetaRepositoryInterface
 {
     public function createNew($data)
     {
-        throw new \Exception('Not implemented');
+        $carpeta = Carpeta::create($data);
+        if(!$carpeta){
+            return false;
+        }
+        $carpetaCreated = Carpeta::with(['user','profesor'])->findOrFail($carpeta->id);
+        return $carpetaCreated;
     }
 
     public function searchByUser($dni)

@@ -3,22 +3,24 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Carpeta extends Model
 {
+    protected $table = 'carpetas';
     protected $fillable = [
         'usuario_id',
         'profesor_id'
     ];
 
     
-    public function user(): HasOne{
-        return $this->hasOne(User::class);
+    public function user(): BelongsTo{
+        return $this->belongsTo(User::class);
     }
 
-    public function profesor(): HasOne{
-        return $this->hasOne(User::class);
+    public function profesor():BelongsTo{
+        return $this->belongsTo(User::class);
     }
 
     public function hjCriteriosEvCualitativa(): HasOne{
