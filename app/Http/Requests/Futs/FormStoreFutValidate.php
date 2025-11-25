@@ -45,6 +45,8 @@ class FormStoreFutValidate extends FormRequest
             'ciclo'=>'nullable|in:I,II,III,IV,V,VI',
         ];
     }
+
+    //Devolviendo una excepcion en JSON
     protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(response()->json([
@@ -52,5 +54,11 @@ class FormStoreFutValidate extends FormRequest
             'message' => 'Validación fallida',
             'errors' => $validator->errors()
         ], 422));
+    }
+
+    //Especificamos que nuestra FromRequest es para api JSON
+    public function wantsJson()
+    {
+        return true;
     }
 }
