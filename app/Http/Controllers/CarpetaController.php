@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\Hojas\FormStoreHjAceptacionValidate;
 use App\Services\CarpetaService;
 use Illuminate\Http\Request;
 
@@ -22,8 +23,18 @@ class CarpetaController extends Controller
         return $this->carpetaService->shearchByDni($dni);
     }
 
-    public function addAceptacionInfo($data){
-        return $this->carpetaService->addInfoEvaluacion($data);
+    public function addAceptacionInfo(FormStoreHjAceptacionValidate $request){        
+        $data = $request->validated();
+        if(!$this->carpetaService->addInfoHjAceptacion($data)){
+            return response()->json([
+                'status'=>'error',
+                'response'=> 'Ha ocurrido un error'                
+            ],400);
+        }
+        return response()->json([
+            'status'=>'success',
+            'response'=> 'Hoja de Aceptacion Completada'                
+        ],201);
     }
 
     public function addCriteriosEvCinfo($data){

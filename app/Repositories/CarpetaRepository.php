@@ -3,6 +3,7 @@
 namespace App\Repositories;
 
 use App\Interfaces\CarpetaRepositoryInterface;
+use App\Models\HjAceptacion;
 
 class CarpetaRepository implements CarpetaRepositoryInterface
 {
@@ -18,7 +19,11 @@ class CarpetaRepository implements CarpetaRepositoryInterface
 
     public function addHjAceptcion($data)
     {
-        throw new \Exception('Not implemented');
+        if(!HjAceptacion::create($data)){
+            return false;
+        }
+        return true;
+        
     }
 
     public function addCriteriosEvCualitativa($data)
