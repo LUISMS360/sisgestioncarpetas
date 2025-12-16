@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('futs', function (Blueprint $table) {
+            $table->string('dirigida')->nullable(); //AGREGUE ESTO -- SOY CHRIS
             $table->enum('turno',['dia','noche'])->nullable();
             $table->enum('ciclo',['I','II','III','IV','V','VI'])->nullable();
         });
