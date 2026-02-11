@@ -3,6 +3,10 @@
 use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
+use App\Http\Middleware\rutas\IsAdmin;
+use App\Http\Middleware\rutas\IsEstudiante;
+use App\Http\Middleware\rutas\IsProfesor;
+
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -12,7 +16,11 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        //
+        $middleware->alias([
+            'is_admin'=> IsAdmin::class,
+            'is_profesor'=> IsProfesor::class,
+            'is_estudiante'=> IsEstudiante::class,
+        ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //

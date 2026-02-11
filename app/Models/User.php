@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Str;
 
 class User extends Authenticatable
 {
@@ -24,7 +25,7 @@ class User extends Authenticatable
         'password',
         'rol',
         'dni',
-        'telefono'
+        'telefono',
     ];
 
     /**
@@ -50,9 +51,28 @@ class User extends Authenticatable
         ];
     }
 
-    public function carpetas(): HasMany{
+    public function carpetas(): HasMany
+    {
         return $this->hasMany(Carpeta::class);
     }
+    public function isRole(){
+        return $this->rol;
+    }
 
+    public function carpetasc(){
+        return $this->hasMany(Carpeta::class,'admin_id','id' );
+    }
+    public function getInitialsAttribute()
+    {
+        $words = explode(' ', $this->name);
+        $initials = collect($words)->map(function ($word) {
+            return Str::upper(Str::substr($word, 0, 1));
+        })->take(2)->join('');
+        return $initials;
+    }
 
+    public function notifications()
+    {
+        return $this->hasMany(Notificacion::class);
+    }
 }

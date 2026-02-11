@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Fut extends Model
 {
@@ -10,6 +11,7 @@ class Fut extends Model
 
     protected $fillable = [        
         'resumen_solicitud',
+        'dirigida',
         'datos_del_solicitante',
         'nombres_apellidos',
         'documento_identidad',
@@ -30,4 +32,12 @@ class Fut extends Model
         'ciclo',
         'user_id'
     ];
+    protected $attributes = [
+        'dirigida'=>'ISTP Manuel Seoane Corrales',
+        'lugar'=>'Lima Peru, San Juan de Lurigancho'
+    ];
+
+    public function carpeta(): HasOne{
+        return $this->hasOne(Carpeta::class);
+    }
 }
