@@ -4,8 +4,10 @@ namespace App\Livewire\Frontend\Admin\Carpetas\Acciones;
 
 use App\Models\Carpeta;
 use App\Models\Fut;
+use App\Models\Memorandom;
 use App\Models\Notificacion;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
@@ -31,6 +33,23 @@ class CrearCarpeta extends Component
     public $fecha;
     public $selectedFut;
     public $selectedAdmin;
+
+    //Filtros 
+
+    #[Url]
+    public $cargo;
+
+    #[Url]
+    public $mes;
+
+    #[Url]
+    public $turno;
+
+    #[Url]
+    public $ciclo;
+
+    #[Url]
+    public $anio_egreso;
 
     public function updatedDni()
     {
@@ -72,14 +91,31 @@ class CrearCarpeta extends Component
         return Fut::whereLike('documento_identidad', '%' . $this->dni . '%')
             ->select(
                 'id',
-                'resumen_solicitud as resumen',
                 'datos_del_solicitante as datos',
                 'documento_identidad as dni',
                 'correo',
                 'cargo_actual as cargo',
+                'fundamentacion_pedido as fundamentacion',
                 'estado',
-                'fecha'
-            )->orderBy('id','desc')
+                'created_at'
+            )
+            ->when($this->cargo,function (Builder $q) {
+                $q->where('cargo_actual', $this->cargo);
+            })
+            ->when($this->mes,function (Builder $q){
+                $q->whereMonth('created_at', $this->mes);
+            })
+            ->when($this->turno,function (Builder $q) {
+                $q->where('turno', $this->turno);
+            })
+            ->when($this->ciclo,function (Builder $q) {
+                $q->where('ciclo', $this->ciclo);
+            })
+            ->when($this->anio_egreso,function (Builder $q) {
+                $q->whereYear('created_at', $this->anio_egreso);
+            })
+            ->where('estado','recibido')
+            ->orderBy('id','desc')
             ->paginate(8);
     }
 
@@ -124,19 +160,27 @@ class CrearCarpeta extends Component
             'fecha'       => $data['fecha']
         ]);
 
+        //Modificando el estado del fut asociado
         Fut::where('id', $this->selectedFut)->update(['estado' => 'revisado']);
+        $fut = Fut::findOrFail($this->selectedFut);
+        $profesor = User::findOrFail($this->profesor);
+
+        //memorando para el profesor
+        $memo = Memorandom::create(['profesor_id'=>$profesor->id,'asunto'=>'Supervision de practicas del egresado '.$fut->datos_del_solicitante,
+        'modulo'=>$fut->modulo]);
 
         //Notificacion para el profesor        
-        Notificacion::create(['user_id'=>$this->profesor,'titulo'=>'Carpeta asignada',
-        'contenido'=>'Se le ha asignado una carpeta a supervisar con limite hasta'.$data['fecha'],
+        Notificacion::create(['user_id'=>$profesor->id,'titulo'=>'Carpeta asignada',
+        'contenido'=>'Se le ha asignado la carpeta del estudiante '.$fut->datos_del_solicitante.' a supervisar con limite hasta '.$data['fecha'],
         'emisor_id'=>auth()->user()->id]);
 
-        $fut = Fut::findOrFail($this->selectedFut);
-        $user = User::findOrFail($fut->user_id);
+        Notificacion::create(['user_id'=>$profesor->id,'titulo'=>'Memorandum Emitido',
+        'contenido'=>'Se le ha emitido un nuevo memorandom de supervision Nro -'.$memo->id,
+        'emisor_id'=>auth()->user()->id]);
 
         //Notificacion para el estudiante
-        Notificacion::create(['user_id'=>$user->id,'titulo'=>'Carpeta en revision', 
-        'contenido'=>'Su carpeta estara en revision hasta '.$data['fecha'],'emisor_id'=>auth()->user()->id]);
+        Notificacion::create(['user_id'=>$fut->user_id,'titulo'=>'Carpeta en revision', 
+        'contenido'=>'Su carpeta estara en revision a cargo de '.$profesor->name.' hasta '.$data['fecha'],'emisor_id'=>auth()->user()->id]);
 
         $this->dispatch('carpeta-creada');
         $this->reset(['profesor', 'selectedFut', 'selectedAdmin', 'fecha']);

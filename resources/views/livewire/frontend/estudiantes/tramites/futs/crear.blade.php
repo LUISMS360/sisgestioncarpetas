@@ -26,6 +26,7 @@
             <x-partials.inputs.fut.input label="TELEFONOS" wire:model.live.blur="formFut.telefonos" />
             <x-partials.inputs.fut.input label="CORREO" wire:model.live.blur="formFut.correo" />
             <x-partials.inputs.fut.input label="DOMICILIO" wire:model.live.blur="formFut.domicilio" />
+            <x-partials.inputs.fut.input label="MODULO" wire:model.live.blur="formFut.modulo" />
             <br>
             <label for="" class="mb-3">Cargo Actual</label>
             <div class="row justify-content-center text-center">

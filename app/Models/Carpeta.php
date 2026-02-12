@@ -21,7 +21,13 @@ class Carpeta extends Model
         'hj_evaluacion_prtc_preprofesional',
         'hj_informe_prtc_preprofesional',
         'hj_resumen_prtc_preprofesional',
-        'estado'
+        'estado',
+        'modulo',
+        'nota',
+        'nota_letra', 
+        'lugar',
+        'fecha_inicio',
+        'fecha_fin',
     ];
 
     

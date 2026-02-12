@@ -118,9 +118,12 @@
                             <button class="btn btn-sm btn-outline-primary" title="Ver">
                                 <i class="bi bi-eye "></i>
                             </button>
-                            <button class="btn btn-sm btn-outline-dark" title="Generar Pdf  ">
+                            <a class="btn btn-sm btn-outline-dark" target="_blank" href="{{route('generar.acta.pdf',['id'=>$carpeta->id])}}" title="Generar Pdf">
                                 <i class="bi bi-file-earmark-pdf"></i>
-                            </button>
+                            </a>
+                            <a class="btn btn-sm btn-outline-success" href="{{route('descargar.acta.pdf',['id'=>$carpeta->id])}}" title="Descargar Pdf">
+                                <i class="bi bi-file-earmark-arrow-down-fill"></i>
+                            </a>
                             <button class="btn btn-sm btn-outline-danger" title="Eliminar">
                                 <i class="bi bi-trash3"></i>
                             </button>

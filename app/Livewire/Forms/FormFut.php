@@ -60,6 +60,9 @@ class FormFut extends Form
     #[Validate]
     protected $user_id;
 
+    #[Validate]
+    public $modulo;
+
 
     public function rules(): array
     {
@@ -80,6 +83,7 @@ class FormFut extends Form
             'documentos_adjuntados' => 'required|string|max:255',
             'turno' => 'nullable|in:mañana,noche',
             'ciclo' => 'nullable|in:I,II,III,IV,V,VI',
+            'modulo'=>'nullable|in:I,II,III'
         ];
     }
     public function create()

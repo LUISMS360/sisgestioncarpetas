@@ -40,6 +40,14 @@ class Editar extends Component
 
     public $hj_resumen_prtc_preprofesional;
 
+    public $nota;
+
+    public $modulo;
+    public $nota_letra; 
+    public $lugar;
+
+    public $fecha_inicio; 
+    public $fecha_fin;
     public function mount($id)
     {
         $this->id = $id;
@@ -72,6 +80,12 @@ class Editar extends Component
         $this->hj_evaluacion_prtc_preprofesional = $this->carpeta->hj_evaluacion_prtc_preprofesional;
         $this->hj_informe_prtc_preprofesional = $this->carpeta->hj_informe_prtc_preprofesional;
         $this->hj_resumen_prtc_preprofesional = $this->carpeta->hj_resumen_prtc_preprofesional;
+        $this->modulo = $this->carpeta->modulo;
+        $this->nota = $this->carpeta->nota;
+        $this->nota_letra = $this->carpeta->nota_letra;
+        $this->lugar = $this->carpeta->lugar;
+        $this->fecha_inicio = $this->carpeta->fecha_inicio;
+        $this->fecha_fin = $this->carpeta->fecha_fin;
     }
 
     public function toggleEdit()
@@ -87,7 +101,13 @@ class Editar extends Component
             'hj_monitoreo_prtc_preprofesional'  => (int) $this->hj_monitoreo_prtc_preprofesional,
             'hj_evaluacion_prtc_preprofesional' => (int) $this->hj_evaluacion_prtc_preprofesional,
             'hj_informe_prtc_preprofesional'    => (int) $this->hj_informe_prtc_preprofesional,
-            'hj_resumen_prtc_preprofesional'    => (int) $this->hj_resumen_prtc_preprofesional
+            'hj_resumen_prtc_preprofesional'    => (int) $this->hj_resumen_prtc_preprofesional,
+            'modulo'=>$this->modulo,
+            'nota'=>$this->nota,
+            'nota_letra'=>$this->nota_letra,
+            'lugar'=>$this->lugar,
+            'fecha_inicio'=>$this->fecha_inicio,
+            'fecha_fin'=>$this->fecha_fin,
         ]);
 
         $progreso = DB::table('carpetas')

@@ -162,7 +162,7 @@
                             class="sidebar-item  has-sub">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-person-fill"></i>
-                                <span>Gestonar</span>
+                                <span>Gestionar</span>
                             </a>
 
                             <ul class="submenu ">
@@ -184,8 +184,7 @@
 
                         <li class="sidebar-title">Profesores</li>
 
-                        <li
-                            class="sidebar-item  has-sub">
+                        <li class="sidebar-item  has-sub">
                             <a href="#" class='sidebar-link'>
                                 <i class="bi bi-person-circle"></i>
                                 <span>Gestionar</span>
@@ -194,12 +193,12 @@
                             <ul class="submenu ">
 
                                 <li class="submenu-item  ">
-                                    <a href="ui-widgets-chatbox.html" class="submenu-link">Todos</a>
+                                    <a href="{{ route('admin.profesores.crear') }}" wire:navigate class="submenu-link">Crear</a>
 
                                 </li>
 
                                 <li class="submenu-item  ">
-                                    <a href="ui-widgets-pricing.html" class="submenu-link">Supervisores</a>
+                                    <a href="{{ route('admin.profesores') }}" wire:navigate class="submenu-link">Todos</a>
 
                                 </li>
                             </ul>
@@ -217,7 +216,6 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark text-small shadow w-100" aria-labelledby="dropdownUserMenu">
                                 <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i> Mi Perfil</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i> Ajustes</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>

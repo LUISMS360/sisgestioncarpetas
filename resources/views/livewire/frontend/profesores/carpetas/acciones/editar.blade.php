@@ -4,34 +4,39 @@
         <div class="mt-2">
             <strong>Fecha de Emision {{$creacion}}</strong>
         </div>
+        <div class="row mt-3 mb-2 d-flex justify-content-end">
+            <div class="col-12 col-sm-3">
+                <x-partials.inputs.fut.input label="Modulo" :disabled="!$isEditable"  wire:model="modulo" />
+            </div>
+        </div>
         <h4 class="mb-5 mt-2">Estudiante / Egresado</h4>
         <div class="row">
             <div class="col-12 col-sm-6">
-                <x-partials.inputs.fut.input label="Estudiante" :disabled="!$isEditable" disabled wire:model="estudiante" />
+                <x-partials.inputs.fut.input label="Estudiante" disabled wire:model="estudiante" />
             </div>
             <div class="col-sm-3">
-                <x-partials.inputs.fut.input label="Cargo" :disabled="!$isEditable" wire:model="cargo" />
+                <x-partials.inputs.fut.input label="Cargo" disabled wire:model="cargo" />
             </div>
             <div class="col-sm-3">
-                <x-partials.inputs.fut.input label="Carrera" :disabled="!$isEditable" wire:model="carrera" />
+                <x-partials.inputs.fut.input label="Carrera" disabled wire:model="carrera" />
             </div>
         </div>
         <div class="row mt-4">
             <div class="col-sm-3">
-                <x-partials.inputs.fut.input label="Documento" wire:model="documento" :disabled="!$isEditable" />
+                <x-partials.inputs.fut.input label="Documento" disabled  wire:model="documento"/>
             </div>
             <div class="col-sm-3">
-                <x-partials.inputs.fut.input label="Telefono" :disabled="!$isEditable" wire:model="telefono" />
+                <x-partials.inputs.fut.input label="Telefono" disabled wire:model="telefono" />
             </div>
             <div class="col-sm-3">
-                <x-partials.inputs.fut.input label="Correo" :disabled="!$isEditable" wire:model="correo" />
+                <x-partials.inputs.fut.input label="Correo" disabled wire:model="correo" />
             </div>
             <div class="col-sm-3">
                 @if ($this->cargo == 'estudiante')
-                <x-partials.inputs.fut.input label="Turno" :disabled="!$isEditable" wire:model="turno" />
-                <x-partials.inputs.fut.input label="Ciclo" :disabled="!$isEditable" wire:model="ciclo" />
+                <x-partials.inputs.fut.input label="Turno" disabled wire:model="turno" />
+                <x-partials.inputs.fut.input label="Ciclo" disabled wire:model="ciclo" />
                 @elseif($this->cargo == 'egresado')
-                <x-partials.inputs.fut.input label="Egreso" :disabled="!$isEditable" wire:model="anio_egreso" />
+                <x-partials.inputs.fut.input label="Egreso" disabled wire:model="anio_egreso" />
                 @endif
             </div>
         </div>
@@ -39,16 +44,16 @@
             <div class="col-12 col-lg-6 mt-4">
                 <div class="mb-2">
                     <label for="" class="form-label mb-3 fw-bold">Resumen de Solicitud</label>
-                    <input type="text" class="form-control" name="" {{ $isEditable ? '' : 'disabled' }} wire:model="resumen" />
+                    <input type="text" class="form-control" disabled wire:model="resumen" />
                 </div>
-                <x-partials.inputs.fut.text-area label="Documentos adjuntados" rows="4" :disabled="!$isEditable" wire:model="documentos_adjuntos" />
+                <x-partials.inputs.fut.text-area label="Documentos adjuntados" rows="4" disabled wire:model="documentos_adjuntos" />
             </div>
             <div class="col-12 col-lg-6 mt-4">
-                <x-partials.inputs.fut.text-area label="Fundamentacion del Pedido" :disabled="!$isEditable" wire:model="fundamentacion_pedido" />
+                <x-partials.inputs.fut.text-area label="Fundamentacion del Pedido" disabled wire:model="fundamentacion_pedido" />
             </div>
         </div>
         <div class="container-fluid mt-2">
-            <h4>Actualizar Hojas de Carpeta</h4>
+            <h5>Actualizar Hojas de Carpeta</h5>
         </div>
         <div class="row d-flex justify-content-center mt-3">
             <div class="col-12 col-sm-2">
@@ -110,6 +115,31 @@
                     <input class="form-check-input" type="checkbox" wire:model="hj_resumen_prtc_preprofesional" {{ $isEditable ? '' : 'disabled' }} id="" />
                 </div>
                 @endif
+            </div>
+        </div>
+        <div class="container-fluid mt-5">
+             <h5>Periodo de practicas</h5>
+        </div>        
+        <div class="row mt-3">
+            <div class="col-12 col-sm-6">
+                <x-partials.inputs.fut.input label="Fecha Inicio" :disabled="!$isEditable" wire:model="fecha_inicio" />
+            </div>
+            <div class="col-12 col-sm-6">
+                <x-partials.inputs.fut.input label="Fecha Fin" :disabled="!$isEditable" wire:model="fecha_fin" />
+            </div>
+        </div>
+        <div class="container-fluid mt-5">
+             <h5>Calificacion Final</h5>
+        </div>        
+        <div class="row mt-4 justify-content-center">
+            <div class="col-12 col-sm-3 mt-4">
+                <x-partials.inputs.fut.input label="Nota" :disabled="!$isEditable" wire:model="nota" />
+            </div>
+            <div class="col-12 col-sm-3 mt-4">
+                <x-partials.inputs.fut.input label="NotaL" :disabled="!$isEditable" wire:model="nota_letra" />
+            </div>
+            <div class="col-12 col-sm-5 mt-4">
+                <x-partials.inputs.fut.input label="Lugar" :disabled="!$isEditable" wire:model="lugar" />
             </div>
         </div>
         <div class="row mt-3">

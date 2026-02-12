@@ -30,7 +30,8 @@ class Fut extends Model
         'firma',
         'turno',
         'ciclo',
-        'user_id'
+        'user_id',
+        'modulo'
     ];
     protected $attributes = [
         'dirigida'=>'ISTP Manuel Seoane Corrales',

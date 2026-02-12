@@ -3,6 +3,7 @@
 namespace App\Livewire\Frontend\Admin\Carpetas;
 
 use App\Models\Carpeta;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\Layout;
@@ -28,10 +29,10 @@ class Gestionadas extends Component
 
 
     #[Url]
-    public $anio_egreso= '';
+    public $anio_egreso = '';
 
     #[Url]
-    public $turno='';
+    public $turno = '';
 
     public function  updatedDni()
     {
@@ -88,7 +89,7 @@ class Gestionadas extends Component
             ->join('users as a', 'a.id', '=', 'c.admin_id')
             ->where('c.estado', 'revisado')
             ->when($this->anio, function ($query) {
-                  $query->whereYear('c.created_at', $this->anio);
+                $query->whereYear('c.created_at', $this->anio);
             })->when($this->anio_egreso, function ($query) {
                 $query->where('f.anio_egresado', $this->anio_egreso);
             })

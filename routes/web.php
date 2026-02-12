@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Pdfs\PdfActaController;
 use App\Http\Controllers\ProfileController;
 use App\Livewire\Frontend\Admin\Carpetas\Acciones\CrearCarpeta;
 use App\Livewire\Frontend\Admin\Carpetas\Acciones\EditarCarpeta;
@@ -20,39 +21,30 @@ use App\Livewire\Frontend\Profesores\Carpetas\Acciones\Editar as EditarCarpetaPr
 use App\Livewire\Frontend\Admin\Notificaciones\Notificaciones as NotificacionesAdmin;
 use App\Livewire\Frontend\Estudiantes\Notificaciones\Notificaciones as NotificacionesEstudiante;
 use App\Livewire\Frontend\Profesores\Notificaciones\Notificaciones as NotificacionesProfesor;
+use App\Livewire\Frontend\Admin\Profesores\Crear as CrearProfesor;
+use App\Livewire\Frontend\Admin\Profesores\Profesores as Profesores;
+use App\Http\Controllers\SesionController;
 
 use Illuminate\Support\Facades\Route;
 
 
-Route::get('/', function () {
-    // 1. Si NO está logueado, mostramos el login tranquilamente
-    if (!auth()->check()) {
-        return view('auth.login');
-    }
-
-    // 2. Si SÍ está logueado, lo mandamos a SU dashboard según su rol
-    // Esto evita que un logueado vea el login y que el middleware lo rebote
-    $rol = auth()->user()->rol;
-
-    return match ($rol) {
-        'admin'      => redirect()->route('admin.dashboard'),
-        'profesor'   => redirect()->route('profesor.dashboard'),
-        'estudiante' => redirect()->route('estudiante.dashboard'),
-        default      => redirect('/'), 
-    };
-});
+Route::get('/', [SesionController::class,'index'])->name('home');
 
 Route::middleware('auth')->group(function () {
 
     //Ruta para administradores
     Route::prefix('admin')->group(function () {
         Route::get('/dashboard', DashboardAdmin::class)->name('admin.dashboard')->middleware('is_admin');
-        Route::get('/acciones/crear-carpeta', CrearCarpeta::class)->name('admin.crear-carpeta')->middleware('is_admin');;
-        Route::get('/carpetas/pendientes', CarpetasPendientes::class)->name('admin.carpetas.pendientes')->middleware('is_admin');;
-        Route::get('/futs/pendientes', FutsPendientesAdmin::class)->name('admin.futs.pendientes')->middleware('is_admin');;
-        Route::get('/acciones/editar/carpeta/{id}',EditarCarpeta::class)->name('admin.editar-carpeta')->middleware('is_admin');;
-        Route::get('/carpetas/gestionadas',CarpetasGestionadas::class)->name('admin.carpetas-gestionadas')->middleware('is_admin');;
-        Route::get('/notificaciones',NotificacionesAdmin::class)->name('admin.notificaciones')->middleware('is_admin');;
+        Route::get('/acciones/crear-carpeta', CrearCarpeta::class)->name('admin.crear-carpeta')->middleware('is_admin');
+        Route::get('/carpetas/pendientes', CarpetasPendientes::class)->name('admin.carpetas.pendientes')->middleware('is_admin');
+        Route::get('/futs/pendientes', FutsPendientesAdmin::class)->name('admin.futs.pendientes')->middleware('is_admin');
+        Route::get('/acciones/editar/carpeta/{id}',EditarCarpeta::class)->name('admin.editar-carpeta')->middleware('is_admin');
+        Route::get('/carpetas/gestionadas',CarpetasGestionadas::class)->name('admin.carpetas-gestionadas')->middleware('is_admin');
+        Route::get('/notificaciones',NotificacionesAdmin::class)->name('admin.notificaciones')->middleware('is_admin');
+        Route::get('/profesores/crear-profesor',CrearProfesor::class)->name('admin.profesores.crear')->middleware('is_admin');
+        Route::get('/profesores',Profesores::class)->name('admin.profesores')->middleware('is_admin');
+        Route::get('/carpetas/gestionadas/generar-pdf/{id}',[PdfActaController::class,'generarPdf'])->name('generar.acta.pdf')->middleware('is_admin');
+        Route::get('/carpetas/gestionadas/descargar-pdf/{id}',[PdfActaController::class,'descargarPdf'])->name('descargar.acta.pdf')->middleware('is_admin');
     });
     //Rutas para Estudiantes
     Route::prefix('estudiantes')->group(function () {

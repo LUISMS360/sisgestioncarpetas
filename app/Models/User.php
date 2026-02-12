@@ -62,6 +62,10 @@ class User extends Authenticatable
     public function carpetasc(){
         return $this->hasMany(Carpeta::class,'admin_id','id' );
     }
+
+    public function momorandos(){
+        return $this->hasMany(Memorandom::class);
+    }
     public function getInitialsAttribute()
     {
         $words = explode(' ', $this->name);

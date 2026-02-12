@@ -41,7 +41,68 @@
             </div>
         </div>
     </div>
-
+    <div class="row g-2 justify-content-end border-bottom pb-4 mb-3">
+        <div class="col-12 col-md-2">
+            <label class="form-label fw-semibold small text-secondary">Cargo</label>
+            <select class="form-select border-2 shadow-sm" wire:model.live="cargo">
+                <option value="">Todos</option>
+                <option value="estudiante">Estudiante</option>
+                <option value="egresado">Egresado</option>
+                <option value="otro">Otro</option>
+            </select>
+        </div>
+        <div class="col-12 col-md-2">
+            <label class="form-label fw-semibold small text-secondary">Mes</label>
+            <select class="form-select border-2 shadow-sm" wire:model.live="mes">
+                <option value="">Todos</option>
+                <option value="1">Enero</option>
+                <option value="2">Febrero</option>
+                <option value="3">Marzo</option>
+                <option value="4">Abril</option>
+                <option value="5">Mayo</option>
+                <option value="6">Junio</option>
+                <option value="7">Julio</option>
+                <option value="8">Agosto</option>
+                <option value="9">Setiembre</option>
+                <option value="10">Ocutbre</option>
+                <option value="11">Nomviembre</option>
+                <option value="12">Diciembre</option>
+            </select>
+        </div>
+        <div class="col-12 col-md-2">
+            <label class="form-label fw-semibold small text-secondary">Turno</label>
+            <select class="form-select border-2 shadow-sm" wire:model.live="turno">
+                <option value="">Todos</option>
+                <option value="mañana">Mañana</option>
+                <option value="noche">Noche</option>
+            </select>
+        </div>
+        <div class="col-12 col-md-2">
+            <label class="form-label fw-semibold small text-secondary">Ciclo</label>
+            <select class="form-select border-2 shadow-sm" wire:model.live="ciclo">
+                <option value="">Todos</option>
+                <option value="I">I</option>
+                <option value="II">II</option>
+                <option value="III">III</option>
+                <option value="IV">IV</option>
+                <option value="V">V</option>
+                <option value="VI">VI</option>
+            </select>
+        </div>
+        <div class="col-12 col-md-2">
+            <label class="form-label fw-semibold small text-secondary">Añio Egreso</label>
+            <select class="form-select border-2 shadow-sm" wire:model.live="anio_egreso">
+                <option value="">Todos</option>
+                <option value="2026">2026</option>
+                <option value="2025">2025</option>
+                <option value="2024">2024</option>
+                <option value="2023">2023</option>
+                <option value="2022">2022</option>
+                <option value="2021">2021</option>
+                <option value="2020">2020</option>
+            </select>
+        </div>
+    </div>
     <div class="mb-5">
         <div class="d-flex justify-content-between align-items-center mb-3">
             <h4 class="fw-bold mb-0 text-secondary">FUTS Recientes</h4>
@@ -52,11 +113,11 @@
             <table class="table table-hover align-middle mb-0">
                 <thead class="">
                     <tr>
-                        <th class="px-3">#</th>
-                        <th>Resumen</th>
+                        <th class="px-3">#</th>                        
                         <th>Solicitante</th>
                         <th>DNI / Correo</th>
                         <th>Cargo</th>
+                        <th>Fundamentacion</th>
                         <th class="text-center">Estado</th>
                         <th>Fecha</th>
                         <th class="text-center">Acciones</th>
@@ -65,18 +126,16 @@
                 <tbody>
                     @forelse ($this->futs as $fut)
                     <tr>
-                        <td class="px-3 fw-bold text-muted">{{ $fut->id }}</td>
-                        <td>
-                            <div class="text-truncate" style="max-width: 200px;" title="{{ $fut->resumen }}">
-                                {{ $fut->resumen }}
-                            </div>
-                        </td>
+                        <td class="px-3 fw-bold text-muted">{{ $fut->id }}</td>                       
                         <td class="fw-semibold">{{ $fut->datos }}</td>
                         <td>
                             <div class="small fw-bold text-dark">{{ $fut->dni }}</div>
                             <div class="small text-muted">{{ $fut->correo }}</div>
                         </td>
                         <td><span class="badge bg-secondary-subtle text-secondary border fw-normal">{{ $fut->cargo }}</span></td>
+                         <td>
+                            <x-partials.complements.modal :fundamentacion="$fut->fundamentacion" /> 
+                        </td>
                         <td class="text-center">
                             @php
                                 $statusClasses = [
@@ -88,7 +147,7 @@
                             @endphp
                             <span class="badge border {{ $class }} rounded-pill px-3">{{ ucfirst($fut->estado) }}</span>
                         </td>
-                        <td class="small text-nowrap">{{ $fut->fecha }}</td>
+                        <td class="small text-nowrap">{{ $fut->created_at }}</td>
                         <td class="text-center">
                             <div class="btn-group shadow-sm">
                                 <button class="btn btn-sm btn-primary" wire:click="agregarCarpeta('{{ $fut->id }}')" title="Crear Carpeta">

@@ -26,6 +26,14 @@ class EditarCarpeta extends Component
     public $documentos_adjuntos, $fundamentacion_pedido;
     public $progreso, $fecha, $creacion, $estado;
 
+    public $nota;
+
+    public $modulo;
+    public $nota_letra; 
+    public $lugar;
+
+    public $fecha_inicio; 
+    public $fecha_fin;
     public function mount($id)
     {
         $this->id = $id;
@@ -66,9 +74,6 @@ class EditarCarpeta extends Component
         $this->dispatch('fecha-actualizada');
     }
 
-    public function marcarCompleto(){
-        
-    }
 
     public function render()
     {

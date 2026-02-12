@@ -45,9 +45,7 @@ class Pendientes extends Component
     public function updateDni(){
         $this->resetPage();
     }
-    public function filCiclo($ciclo){
-        $this->ciclo = $ciclo;
-    }
+
     #[Computed]
     public function futs(){
         return Fut::select('id','nombres_apellidos as nombres',

@@ -40,7 +40,7 @@
                                 <div class="fw-bold text-dark mb-0" style="font-size: 0.9rem;">
                                     {{ $notificacion->titulo }}
                                 </div>
-                                <div class="text-muted small text-truncate" style="max-width: 400px;">
+                                <div class="text-muted small " style="max-width: 400px;">
                                     {{ $notificacion->contenido }}
                                 </div>
                             </td>

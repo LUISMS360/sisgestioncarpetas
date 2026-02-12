@@ -129,7 +129,6 @@
                             </a>
                             <ul class="dropdown-menu dropdown-menu-dark text-small shadow w-100" aria-labelledby="dropdownUserMenu">
                                 <li><a class="dropdown-item" href="#"><i class="bi bi-person me-2"></i> Mi Perfil</a></li>
-                                <li><a class="dropdown-item" href="#"><i class="bi bi-gear me-2"></i> Ajustes</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
