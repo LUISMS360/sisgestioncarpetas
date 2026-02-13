@@ -34,7 +34,7 @@ return new class extends Migration
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->enum('turno',['mañana','noche'])->nullable();
             $table->enum('ciclo',['I','II','III','IV','V','VI'])->nullable();
-            $table->enum('estado',['recibido','revisado','completo'])->nullable();
+            $table->enum('estado',['recibido','revisado','completo'])->default('recibido');
             $table->enum('modulo',['I','II','III'])->nullable();
             $table->timestamps();
         });
