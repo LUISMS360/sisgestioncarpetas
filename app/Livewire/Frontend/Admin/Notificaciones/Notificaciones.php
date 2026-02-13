@@ -8,48 +8,56 @@ use Livewire\Attributes\Layout;
 use Livewire\Attributes\Title;
 use Livewire\Component;
 use Livewire\WithPagination;
+use Mockery\Matcher\Not;
 
 class Notificaciones extends Component
 {
     use WithPagination;
 
+    // Propiedad para controlar la cantidad de carga
+    public $perPage = 10;
+
     #[Layout('layouts.admin.app')]
     #[Title('Notificaciones')]
 
-    // Definimos el tema de paginación para Bootstrap 5
-
     /**
-     * Eliminar una notificación
+     * Incrementa la cantidad de registros a mostrar
      */
-    public function eliminar($id)
+    public function loadMore()
     {
-        $notificacion = Notificacion::where('user_id', Auth::id())->findOrFail($id);
-        $notificacion->delete();
-
-        // Dispatch para SweetAlert2 (si lo tienes configurado)
-        $this->dispatch('swal', [
-            'title' => 'Eliminado',
-            'text' => 'La notificación ha sido borrada.',
-            'icon' => 'success'
-        ]);
+        $this->perPage += 10;
     }
 
-    /**
-     * Marcar como leída (Opcional si decides añadir la columna después)
-     */
-    public function leer($id)
+    public function eliminar($id)
     {
-        // Aquí podrías redirigir al usuario o abrir un modal
-        // Por ahora lo dejamos listo para futuras expansiones
+       Notificacion::findOrfail($id)->delete();
+        $this->dispatch('notificacion-eliminada');
+    }
+
+    public function marcarLeido($id)
+    {
+        Notificacion::findOrfail($id);
+        Notificacion::where('id', $id)->where('user_id', Auth::id())->update(['estado' => 'leido']);
+        $this->dispatch('notificacion-leida');
+    }
+
+    public function marcarLeidos()
+    {
+        Notificacion::where('user_id', Auth::id())->update(['estado' => 'leido']);
+        $this->dispatch('notificaciones-leidas');
     }
 
     public function render()
     {
+        $query = Notificacion::where('user_id', Auth::id())
+            ->with('emisor')
+            ->latest();
+
         return view('livewire.frontend.admin.notificaciones.notificaciones', [
-            'notificaciones' => Notificacion::where('user_id', Auth::id())
-                ->with('emisor') // Eager loading para evitar el problema N+1
-                ->latest()       // Ordenar por las más recientes
-                ->paginate(10)   // Paginación de 10 en 10
+            'notificaciones' => $query->paginate($this->perPage),
+            // Aquí definimos la variable que te falta:
+            'totalNotificaciones' => Notificacion::where('user_id', Auth::id())
+                ->count()
         ]);
     }
 }

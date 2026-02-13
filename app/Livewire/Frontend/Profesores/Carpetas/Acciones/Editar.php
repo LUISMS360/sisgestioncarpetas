@@ -120,14 +120,16 @@ class Editar extends Component
     }
 
     public function marcaCompleto(){
-        Carpeta::findOrFail($this->id)->update(['estado'=>'revisado']);
-
+        $carpeta = Carpeta::findOrFail($this->id);
         $user = User::findOrFail($this->carpeta->fut->user_id);
         //Estudiante
-        Notificacion::create(['user_id'=>$user->id,'titulo'=>'Carpeta Revisada','contenido'=>'Su carpeta ha sido revisada correctamente','emisor_id'=>Auth::id()]);
+        Notificacion::create(['user_id'=>$user->id,'titulo'=>'Carpeta Revisada','contenido'=>'Su carpeta con Correspondiente al modulo '.$carpeta->modulo.' ha sido revisada correctamente','emisor_id'=>Auth::id()]);
         //Admin
-        Notificacion::create(['user_id'=>$this->carpeta->admin->id,'titulo'=>'Carpeta Supervisada','contenido'=>'Se ha culminado con la supervision de la carpeta','emisor_id'=>Auth::id()]);
+        Notificacion::create(['user_id'=>$this->carpeta->admin->id,'titulo'=>'Carpeta Supervisada','contenido'=>'Se ha culminado con la supervision de la carpeta '.$carpeta->id,'emisor_id'=>Auth::id()]);
+        $carpeta->estado = 'revisado';
+        $carpeta->save();
         $this->dispatch('carpeta-completa');
+
     }
     public function render()
     {

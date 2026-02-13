@@ -108,12 +108,12 @@
             <h4 class="fw-bold mb-0 text-secondary">FUTS Recientes</h4>
             <span class="badge bg-primary-subtle text-primary rounded-pill">Resultados: {{ $this->futs->count() }}</span>
         </div>
-        
+
         <div class="table-responsive ">
             <table class="table table-hover align-middle mb-0">
                 <thead class="">
                     <tr>
-                        <th class="px-3">#</th>                        
+                        <th class="px-3">#</th>
                         <th>Solicitante</th>
                         <th>DNI / Correo</th>
                         <th>Cargo</th>
@@ -126,24 +126,24 @@
                 <tbody>
                     @forelse ($this->futs as $fut)
                     <tr>
-                        <td class="px-3 fw-bold text-muted">{{ $fut->id }}</td>                       
+                        <td class="px-3 fw-bold text-muted">{{ $fut->id }}</td>
                         <td class="fw-semibold">{{ $fut->datos }}</td>
                         <td>
                             <div class="small fw-bold text-dark">{{ $fut->dni }}</div>
                             <div class="small text-muted">{{ $fut->correo }}</div>
                         </td>
                         <td><span class="badge bg-secondary-subtle text-secondary border fw-normal">{{ $fut->cargo }}</span></td>
-                         <td>
-                            <x-partials.complements.modal :fundamentacion="$fut->fundamentacion" /> 
+                        <td>
+                            <x-partials.complements.modal :fundamentacion="$fut->fundamentacion" />
                         </td>
                         <td class="text-center">
                             @php
-                                $statusClasses = [
-                                    'completo' => 'bg-success-subtle text-success border-success-subtle',
-                                    'recibido' => 'bg-warning-subtle text-warning-emphasis border-warning-subtle',
-                                    'default' => 'bg-info-subtle text-info-emphasis border-info-subtle'
-                                ];
-                                $class = $statusClasses[$fut->estado] ?? $statusClasses['default'];
+                            $statusClasses = [
+                            'completo' => 'bg-success-subtle text-success border-success-subtle',
+                            'recibido' => 'bg-warning-subtle text-warning-emphasis border-warning-subtle',
+                            'default' => 'bg-info-subtle text-info-emphasis border-info-subtle'
+                            ];
+                            $class = $statusClasses[$fut->estado] ?? $statusClasses['default'];
                             @endphp
                             <span class="badge border {{ $class }} rounded-pill px-3">{{ ucfirst($fut->estado) }}</span>
                         </td>
@@ -195,8 +195,8 @@
                             <h6 class="mb-0 text-dark fw-bold text-truncate">{{ $profesor->name }}</h6>
                             <small class="text-muted d-block text-truncate">{{ $profesor->email }}</small>
                         </div>
-                        <button class="btn btn-outline-success btn-sm rounded-pill px-3" 
-                                wire:click="designarProfesor('{{ $profesor->id }}')">
+                        <button class="btn btn-outline-success btn-sm rounded-pill px-3"
+                            wire:click="designarProfesor('{{ $profesor->id }}')">
                             <i class="bi bi-person-plus-fill"></i>
                         </button>
                     </div>
@@ -222,6 +222,9 @@
                             <input type="date" class="form-control" wire:model.live="fecha">
                         </div>
                         <p class="form-text mt-2 small">Esta fecha quedará registrada como el plazo máximo para la gestión.</p>
+                        @error('fecha')
+                        <span class="text-danger"> <i class="bi bi-exclamation-triangle me-2"></i>{{ $message }}</span>
+                        @enderror
                     </div>
                 </div>
                 <div class="modal-footer bg-light border-0">
@@ -238,95 +241,100 @@
     <div>
         @script
         <script>
-            Livewire.on('fut-no-encontrado', (e) => {
-                Swal.fire({
+            // 1. Definimos las configuraciones adjuntándolas a 'window' 
+            // para evitar el error de re-declaración y el SyntaxError de 'var/const'
+            window.Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 4000,
+                timerProgressBar: true
+            });
+
+            window.ElegantModal = Swal.mixin({
+                customClass: {
+                    popup: 'rounded-4 border-0 shadow-lg',
+                    confirmButton: 'btn btn-primary px-4 rounded-pill mx-2',
+                    cancelButton: 'btn btn-light px-4 rounded-pill mx-2',
+                    title: 'fw-bold text-dark'
+                },
+                buttonsStyling: false
+            });
+
+            // 2. Usamos $wire directamente
+            $wire.on('fut-no-encontrado', () => {
+                window.ElegantModal.fire({
                     icon: "error",
-                    title: "Fut No Encontrado",
-                    text: "El fut no se encuentra, registrelo ahora",
-                    footer: '<a href="#">registrar Fut?</a>'
+                    title: "FUT No Encontrado",
+                    text: "El número de FUT no existe en nuestros registros.",
+                    footer: '<a href="#" class="text-primary fw-bold text-decoration-none">¿Registrar nuevo FUT?</a>'
                 });
             });
-            Livewire.on('profesor-vacio', (e) => {
-                Swal.fire({
-                    icon: "error",
-                    title: "Oops...",
-                    text: "No ha desiganado a un profesor Supervisor!",
+
+            $wire.on('profesor-vacio', () => {
+                window.Swal.fire({
+                   icon: "warning",
+                    title: "Seleccione un profesor",
+                    text: "No ha designado a un Supervisor"
                 });
             });
-            Livewire.on('fut-revisado', (e) => {
-                Swal.fire({
-                    icon: "warning",
-                    title: "Fut Revisado",
-                    text: "El fut selecionado ya ha sido revisado",
-                });
-            });
-            Livewire.on('profesor-no-encontrado', (e) => {
-                Swal.fire({
-                    icon: "question",
-                    title: "El profesor no existe",
-                    text: "Selecione de la lista de profesores",
-                });
-            });
-            Livewire.on('profesor-designado', (e) => {
-                Swal.fire({
+
+            $wire.on('profesor-designado', (e) => {
+                let data = Array.isArray(e) ? e[0] : e;
+                window.Toast.fire({
                     icon: "success",
-                    title: "Profesor Desiganado!",
-                    text: e.name + " Supervisor de la carpeta",
-                    draggable: true
+                    title: "Designación Exitosa",
+                    text: (data.name || '') + " es el nuevo supervisor"
                 });
             });
-            Livewire.on('confirmar-eliminacion-fut', (e) => {
-                const swalWithBootstrapButtons = Swal.mixin({
-                    customClass: {
-                        confirmButton: "btn btn-success",
-                        cancelButton: "btn btn-danger me-2"
-                    },
-                    buttonsStyling: false
-                });
-                swalWithBootstrapButtons.fire({
-                    title: "Desea eliminar el FUT?",
-                    text: "No se podra revertir la accion!",
+
+            $wire.on('confirmar-eliminacion-fut', (e) => {
+                let data = Array.isArray(e) ? e[0] : e;
+                window.ElegantModal.fire({
+                    title: "¿Eliminar el FUT?",
+                    text: "Esta acción es permanente.",
                     icon: "warning",
                     showCancelButton: true,
-                    confirmButtonText: "Si, deseo eliminar!",
-                    cancelButtonText: "No, cancelar!",
+                    confirmButtonText: "Sí, eliminar",
+                    cancelButtonText: "Cancelar",
                     reverseButtons: true
                 }).then((result) => {
                     if (result.isConfirmed) {
-                        Livewire.dispatch('eliminar-fut', e.id);
-                    } else if (
-                        result.dismiss === Swal.DismissReason.cancel
-                    ) {
-                        swalWithBootstrapButtons.fire({
-                            title: "Cancelado",
-                            text: "La accion se ha cancelado",
-                            icon: "error"
+                        $wire.dispatch('eliminar-fut', {
+                            id: data.id
                         });
                     }
                 });
             });
-            Livewire.on('fut-eliminado', (e) => {
-                Swal.fire({
-                    title: "Fut " + e.id + " Eliminado Correctamente!",
+            $wire.on('fut-eliminado', (e) => {
+                let data = Array.isArray(e) ? e[0] : e;
+                window.ElegantModal.fire({
                     icon: "success",
-                    draggable: true
+                    title: "¡Carpeta Eliminada!",
+                    text: "Se elimino la carpeta "+data.id,
+                    timer: 2000,
+                    showConfirmButton: false
                 });
             });
-            // Escuchar el evento para abrir el modal
-            window.addEventListener('abrir-modal-fecha', event => {
-                var myModal = new bootstrap.Modal(document.getElementById('modalFecha'));
-                myModal.show();
+            $wire.on('carpeta-creada', () => {
+                let modalEl = document.getElementById('modalFecha');
+                if (modalEl) {
+                    let modal = bootstrap.Modal.getInstance(modalEl);
+                    if (modal) modal.hide();
+                }
+
+                window.ElegantModal.fire({
+                    icon: "success",
+                    title: "¡Carpeta Creada!",
+                    text: "La carpeta se generó correctamente.",
+                    timer: 2000,
+                    showConfirmButton: false
+                });
             });
 
-            // Cerrar el modal cuando la carpeta se cree
-            window.addEventListener('carpeta-creada', event => {
-                bootstrap.Modal.getInstance(document.getElementById('modalFecha')).hide();
-                Swal.fire({
-                    icon: "success",
-                    title: "Carpeta Creada!",
-                    text: "La carpeta se ha creado de manera exitosa!",
-                    draggable: true
-                });
+            window.addEventListener('abrir-modal-fecha', () => {
+                let myModal = new bootstrap.Modal(document.getElementById('modalFecha'));
+                myModal.show();
             });
         </script>
         @endscript

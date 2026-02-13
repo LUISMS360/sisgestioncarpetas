@@ -15,6 +15,7 @@ class Carpeta extends Model
         'profesor_id',
         'fut_id',
         'admin_id',   
+        'progreso',
         'fecha' ,
         'hj_aceptacion_prtc_preprofesional',
         'hj_monitoreo_prtc_preprofesional',

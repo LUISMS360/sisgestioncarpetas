@@ -26,7 +26,7 @@ class Gestionadas extends Component
     #[Computed]
     public function carpetas(){
          return DB::table('carpetas as c')
-            ->select('f.resumen_solicitud as resumen','f.datos_del_solicitante as estudiante','f.documento_identidad as dni',
+            ->select('c.id as id','f.resumen_solicitud as resumen','f.datos_del_solicitante as estudiante','f.documento_identidad as dni',
             'f.correo as correo','p.name as profesor','c.estado as estado','c.created_at as creacion')
             ->join('futs as f','f.id','=','c.fut_id')
             ->join('users as p','p.id','=','c.profesor_id')

@@ -24,7 +24,14 @@ use App\Livewire\Frontend\Profesores\Notificaciones\Notificaciones as Notificaci
 use App\Livewire\Frontend\Admin\Profesores\Crear as CrearProfesor;
 use App\Livewire\Frontend\Admin\Profesores\Profesores as Profesores;
 use App\Http\Controllers\SesionController;
-
+use App\Livewire\Frontend\Admin\Notificaciones\Ver as VerNotificacionAdmin;
+use App\Livewire\Frontend\Estudiantes\Notificaciones\Ver as VerNotificacionEstudiante;
+use App\Livewire\Frontend\Profesores\Notificaciones\Ver as VerNotificacionProfesor;
+use App\Livewire\Frontend\Admin\Memorandos\Emitidos as MemorandosEmitidos;
+use App\Livewire\Frontend\Admin\Memorandos\Profesor\Ver as MemorandoProfesor;
+use App\Livewire\Frontend\Profesores\Memorandos\Recibidos as MemorandosRecibidos;
+use App\Livewire\Frontend\Profesores\Memorandos\Ver as VerMemorando;
+use App\Http\Controllers\Pdfs\PdfMemorandoController;
 use Illuminate\Support\Facades\Route;
 
 
@@ -45,6 +52,11 @@ Route::middleware('auth')->group(function () {
         Route::get('/profesores',Profesores::class)->name('admin.profesores')->middleware('is_admin');
         Route::get('/carpetas/gestionadas/generar-pdf/{id}',[PdfActaController::class,'generarPdf'])->name('generar.acta.pdf')->middleware('is_admin');
         Route::get('/carpetas/gestionadas/descargar-pdf/{id}',[PdfActaController::class,'descargarPdf'])->name('descargar.acta.pdf')->middleware('is_admin');
+        Route::get('/notificaciones/ver-notificacion/{id}',VerNotificacionAdmin::class)->name('admin.notificacion')->middleware('is_admin');
+        Route::get('/memorandos/emitidos',MemorandosEmitidos::class)->middleware('is_admin')->name('admin.memorandos.emitidos');
+        Route::get('/memorandos/profesor/{id}',MemorandoProfesor::class)->middleware('is_admin')->name('admin.memorando.profesor');
+        Route::get('/memorandos/memorando/ver/{id}',[PdfMemorandoController::class,'generarPdf'])->middleware('is_admin')->name('admin.generar.pdf');
+        Route::get('/memorandos/memorando/descargar/{id}',[PdfMemorandoController::class,'descargarPdf'])->middleware('is_admin')->name('admin.descargar.pdf');
     });
     //Rutas para Estudiantes
     Route::prefix('estudiantes')->group(function () {
@@ -55,6 +67,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/tramites/carpetas/ver-carpetas-gestionadas', CarpetasGestionadasEstudiante::class)->name('estudiante.carpetas-gestionadas')->middleware('is_estudiante');
         Route::get('/tramites/carpetas/ver-carpetas-pendientes', CarpetasPendientesEstudiante::class)->name('estudiante.carpetas-pendientes')->middleware('is_estudiante');
         Route::get('/notificaciones',NotificacionesEstudiante::class)->name('estudiante.notificaciones')->middleware('is_estudiante');
+        Route::get('/notificaciones/ver-notificacion/{id}',VerNotificacionEstudiante::class)->middleware('is_estudiante')->name('estudiante.notificacion');        
+        Route::get('/tramites/carpetas/gestionadas/ver-acta/{id}',[PdfActaController::class,'generarPdf'])->middleware('is_estudiante')->name('estudiante.ver-acta');
+        Route::get('/tramites/carpetas/gestionadas/descargar-acta/{id}',[PdfActaController::class,'descargarPdf'])->middleware('is_estudiante')->name('estudiante.descargar-acta');
     });
 
     //Rutas para Profesores
@@ -63,8 +78,13 @@ Route::middleware('auth')->group(function () {
         Route::get('/carpetas/supervisadas',CarpetasSupervisadasProf::class)->name('profesor.carpetas.supervisadas')->middleware('is_profesor');
         Route::get('/carpetas/pendientes',CarpetasPendientesProf::class)->name('profesor.carpetas.pendientes')->middleware('is_profesor');
         Route::get('/carpetas/acciones/editar/carpeta/{id}',EditarCarpetaProf::class)->name('profesor.carpeta.editar')->middleware('is_profesor');
-        Route::get('/notifiaciones',NotificacionesProfesor::class)->name('profesor.notificaciones')->middleware('is_profesor');
-    });
+        Route::get('/notifiaciones',NotificacionesProfesor::class)->name('profesor.notificaciones')->middleware('is_profesor');    
+        Route::get('/notificaciones/ver-notificacion/{id}',VerNotificacionProfesor::class)->middleware('is_profesor')->name('profesor.notificacion');
+        Route::get('/momorandos/recibidos',MemorandosRecibidos::class)->middleware('is_profesor')->name('profesor.memorandos');
+        Route::get('/momorandos/recibidos/ver/{id}',VerMemorando::class)->middleware('is_profesor')->name('profesor.memorando');
+        Route::get('/memorandos/memorando/ver/{id}',[PdfMemorandoController::class,'generarPdf'])->middleware('is_profesor')->name('profesor.generar.pdf');
+        Route::get('/memorandos/memorando/descargar/{id}',[PdfMemorandoController::class,'descargarPdf'])->middleware('is_profesor')->name('profesor.descargar.pdf');
+    });        
 });
 
 

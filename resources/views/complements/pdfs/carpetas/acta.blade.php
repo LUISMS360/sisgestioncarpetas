@@ -6,7 +6,7 @@
     <title>Acta de Prácticas - {{ $carpeta->fut->documento_identidad }}</title>
     <style>
         @page {
-            margin: 2cm 2.5cm;
+            margin: 1cm 2cm;
         }
 
         body {
@@ -88,20 +88,32 @@
             text-align: center;
             padding-top: 5px;
         }
+        .footer-sign {
+            margin-top: 20px;
+            /* Espacio antes de la firma */
+            text-align: center;
+            width: 300px;
+            /* Ancho del bloque de firma */
+            margin-left: auto;
+            margin-right: auto;
+        }
     </style>
 </head>
 
 <body>
 
     <<div style="text-align: center; margin-bottom: 20px;">
-        <img src="{{ public_path('assets/img/logoheader.png') }}" style="width: 100%; max-width: 700px; height: auto;">
-        </div>
-        <div class="header">
-            ACTA DE PRÁCTICAS PRE-PROFESIONALES
+        <img src="{{ public_path('assets/img/header.png') }}" style="width: 100%; max-width: 700px; height: auto;">
         </div>
 
         <div class="module-name">
+            @if($carpeta->modulo == 'I')
             MODULO I: GESTIÓN DE SOPORTE TÉCNICO, SEGURIDAD Y TECNOLOGÍAS DE LA INFORMACIÓN Y COMUNICACIÓN
+            @elseif($carpeta->modulo == 'II')
+            MODULO II: DESARROLLO DE SOFTWARE Y GESTIÓN DE BASE DE DATOS
+            @elseif($carpeta->modulo == 'III')
+            MODULO III: GESTIÓN DE APLICACIONES PARA INTERNET Y PRODUCCIÓN MULTIMEDIA
+            @endif
         </div>
 
         <div class="content">
@@ -151,10 +163,11 @@
             San Juan de Lurigancho, {{ date('d') }} de {{ \Carbon\Carbon::now()->monthName }} del {{ date('Y') }}
         </div>
 
-        <div class="signature-space">
-            <div class="signature-line">
-                Coordinador del Área
+        <div class="footer-sign">
+            <div class="firma-wrapper">
+                <img src="{{ public_path('assets/img/firmaJefe.png') }}" alt="Firma">
             </div>
+            <div class="sign-line"></div>
         </div>
 
 </body>

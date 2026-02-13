@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('titulo')->nullable();
             $table->text('contenido')->nullable();
             $table->foreignId('emisor_id')->constrained('users')->onDelete('cascade');
+            $table->enum('estado', ['pendiente','leido'])->default('pendiente');
             $table->timestamps();
         });
     }

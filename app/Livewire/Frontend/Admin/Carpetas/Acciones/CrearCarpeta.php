@@ -99,23 +99,23 @@ class CrearCarpeta extends Component
                 'estado',
                 'created_at'
             )
-            ->when($this->cargo,function (Builder $q) {
+            ->when($this->cargo, function (Builder $q) {
                 $q->where('cargo_actual', $this->cargo);
             })
-            ->when($this->mes,function (Builder $q){
+            ->when($this->mes, function (Builder $q) {
                 $q->whereMonth('created_at', $this->mes);
             })
-            ->when($this->turno,function (Builder $q) {
+            ->when($this->turno, function (Builder $q) {
                 $q->where('turno', $this->turno);
             })
-            ->when($this->ciclo,function (Builder $q) {
+            ->when($this->ciclo, function (Builder $q) {
                 $q->where('ciclo', $this->ciclo);
             })
-            ->when($this->anio_egreso,function (Builder $q) {
-                $q->whereYear('created_at', $this->anio_egreso);
+            ->when($this->anio_egreso, function (Builder $q) {
+                $q->whereYear('anio_egresado', $this->anio_egreso);
             })
-            ->where('estado','recibido')
-            ->orderBy('id','desc')
+            ->where('estado', 'recibido')
+            ->orderBy('id', 'desc')
             ->paginate(8);
     }
 
@@ -153,6 +153,12 @@ class CrearCarpeta extends Component
         // Validar que la fecha venga en el evento
         if (!isset($data['fecha'])) return;
 
+        $validatedData = $this->validate([
+            'profesor'      => 'required|exists:users,id',
+            'selectedFut'   => 'required|integer', 
+            'selectedAdmin' => 'nullable|integer',  
+            'fecha'         => 'required|date',           
+        ]);
         Carpeta::create([
             'profesor_id' => $this->profesor,
             'fut_id'      => $this->selectedFut,
@@ -166,21 +172,34 @@ class CrearCarpeta extends Component
         $profesor = User::findOrFail($this->profesor);
 
         //memorando para el profesor
-        $memo = Memorandom::create(['profesor_id'=>$profesor->id,'asunto'=>'Supervision de practicas del egresado '.$fut->datos_del_solicitante,
-        'modulo'=>$fut->modulo]);
+        $memo = Memorandom::create([
+            'profesor_id' => $profesor->id,
+            'asunto' => 'Supervision de practicas del egresado ' . $fut->datos_del_solicitante,
+            'modulo' => $fut->modulo
+        ]);
 
         //Notificacion para el profesor        
-        Notificacion::create(['user_id'=>$profesor->id,'titulo'=>'Carpeta asignada',
-        'contenido'=>'Se le ha asignado la carpeta del estudiante '.$fut->datos_del_solicitante.' a supervisar con limite hasta '.$data['fecha'],
-        'emisor_id'=>auth()->user()->id]);
+        Notificacion::create([
+            'user_id' => $profesor->id,
+            'titulo' => 'Carpeta asignada',
+            'contenido' => 'Se le ha asignado la carpeta del estudiante ' . $fut->datos_del_solicitante . ' a supervisar con limite hasta ' . $data['fecha'],
+            'emisor_id' => auth()->user()->id
+        ]);
 
-        Notificacion::create(['user_id'=>$profesor->id,'titulo'=>'Memorandum Emitido',
-        'contenido'=>'Se le ha emitido un nuevo memorandom de supervision Nro -'.$memo->id,
-        'emisor_id'=>auth()->user()->id]);
+        Notificacion::create([
+            'user_id' => $profesor->id,
+            'titulo' => 'Memorandum Emitido',
+            'contenido' => 'Se le ha emitido un nuevo memorandom de supervision Nro -' . $memo->id,
+            'emisor_id' => auth()->user()->id
+        ]);
 
         //Notificacion para el estudiante
-        Notificacion::create(['user_id'=>$fut->user_id,'titulo'=>'Carpeta en revision', 
-        'contenido'=>'Su carpeta estara en revision a cargo de '.$profesor->name.' hasta '.$data['fecha'],'emisor_id'=>auth()->user()->id]);
+        Notificacion::create([
+            'user_id' => $fut->user_id,
+            'titulo' => 'Carpeta en revision',
+            'contenido' => 'Su carpeta estara en revision a cargo de ' . $profesor->name . ' hasta ' . $data['fecha'],
+            'emisor_id' => auth()->user()->id
+        ]);
 
         $this->dispatch('carpeta-creada');
         $this->reset(['profesor', 'selectedFut', 'selectedAdmin', 'fecha']);

@@ -14,25 +14,28 @@ return new class extends Migration
         Schema::create('futs', function (Blueprint $table) {
             $table->id();
             $table->string('resumen_solicitud');
-            $table->string('dirigida');
+            $table->string('dirigida')->nullable();
             $table->string('datos_del_solicitante');
             $table->string('nombres_apellidos');            
             $table->string('documento_identidad');            
-            $table->string('razon_social');
-            $table->string('ruc');
+            $table->string('razon_social')->nullable();
+            $table->string('ruc')->nullable();
             $table->string('telefonos');
             $table->string('correo');
             $table->string('domicilio');
             $table->string('cargo_actual');
             $table->string('carrera_profesional');
-            $table->string('anio_egresado');
+            $table->string('anio_egresado')->nullable();
             $table->text('fundamentacion_pedido');
             $table->string('documentos_adjuntados');
             $table->string('fecha');
             $table->string('lugar');
             $table->string('firma');
-            $table->foreignId('estudiante_id')->constrained('users');
-            $table->foreignId('egresado_id')->constrained('users');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->enum('turno',['mañana','noche'])->nullable();
+            $table->enum('ciclo',['I','II','III','IV','V','VI'])->nullable();
+            $table->enum('estado',['recibido','revisado','completo'])->nullable();
+            $table->enum('modulo',['I','II','III'])->nullable();
             $table->timestamps();
         });
     }

@@ -28,7 +28,7 @@ class Revisados extends Component
             'estado',
             'fecha'
         )
-        ->where('estado', 'completo')
+        ->where('estado', 'revisado')
         ->where('user_id',auth()->user()->id)
         ->paginate(10);
     }

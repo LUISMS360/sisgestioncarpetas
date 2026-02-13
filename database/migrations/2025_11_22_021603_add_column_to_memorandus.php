@@ -11,9 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('memorandus', function (Blueprint $table) {
-            $table->foreignId('admin_id')->constrained('users');
-            $table->foreignId('profesor_id')->constrained('users');
+        Schema::create('memorandus', function (Blueprint $table) {
+            $table->foreignId('profesor_id')->constrained('users')->onDelete('cascade');
+            $table->string('asunto');
+            $table->string('modulo');
+            $table->timestamps();
         });
     }
 
@@ -22,8 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('memorandus', function (Blueprint $table) {
-            //
-        });
+        Schema::dropIfExists('memorandus');
     }
 };

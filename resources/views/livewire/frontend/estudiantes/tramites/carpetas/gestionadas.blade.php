@@ -3,7 +3,12 @@
         <div class="card-header bg-white border-0 pt-4 px-4">
             <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
                 <div>
-                    <h2 class="fw-bold text-dark mb-1">Carpetas Gestionadas</h2>
+                    <div class="d-flex align-items-center mb-4">
+                        <div class="bg-primary text-white rounded-3 p-2 me-3">
+                            <i class="bi bi-archive-fill fs-3"></i>
+                        </div>
+                        <h2 class="fw-bold text-dark mb-1">Carpetas Gestionadas</h2>
+                    </div>
                     <p class="text-muted small mb-0">Listado histórico de expedientes finalizados y archivados.</p>
                 </div>
 
@@ -31,6 +36,7 @@
                             <th class="py-3 border-0">Profesor Asignado</th>
                             <th class="py-3 border-0 text-center">Estado</th>
                             <th class="py-3 border-0">Fecha Registro</th>
+                            <th class="py-3 border-0">Acciones</th>
                         </tr>
                     </thead>
                     <tbody class="border-top-0">
@@ -68,6 +74,16 @@
                                 <div class="d-flex flex-column">
                                     <span class="small fw-bold text-dark">{{ \Carbon\Carbon::parse($carpeta->creacion)->format('d/m/Y') }}</span>
                                     <span class="text-muted" style="font-size: 0.7rem;">{{ \Carbon\Carbon::parse($carpeta->creacion)->format('h:i A') }}</span>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="btn-group">
+                                    <a target="_blank" href="{{route('estudiante.ver-acta',['id'=>$carpeta->id])}}" class="btn btn-sm btn-outline-primary">
+                                        <i class="bi bi-eye-fill"></i>
+                                    </a>
+                                    <a href="{{ route('estudiante.descargar-acta',['id'=>$carpeta->id]) }}" class="btn btn-sm btn-outline-danger">
+                                        <i class="bi bi-file-earmark-pdf-fill"></i>
+                                    </a>
                                 </div>
                             </td>
                         </tr>

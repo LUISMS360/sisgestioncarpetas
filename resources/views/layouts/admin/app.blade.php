@@ -151,7 +151,7 @@
                             </a>
                             <ul class="submenu ">
                                 <li class="submenu-item">
-                                    <a href="" class="submenu-link">Gestionadas</a>
+                                    <a href="{{ route('admin.memorandos.emitidos') }}" wire:navigate class="submenu-link">Emitidos</a>
                                 </li>
                             </ul>
                         </li>
@@ -177,8 +177,6 @@
                                 </li>
 
                             </ul>
-
-
                         </li>
 
 

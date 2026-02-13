@@ -6,7 +6,7 @@
         </div>
         <div class="row mt-3 mb-2 d-flex justify-content-end">
             <div class="col-12 col-sm-3">
-                <x-partials.inputs.fut.input label="Modulo" :disabled="!$isEditable"  wire:model="modulo" />
+                <x-partials.inputs.fut.input label="Modulo" :disabled="!$isEditable" wire:model="modulo" />
             </div>
         </div>
         <h4 class="mb-5 mt-2">Estudiante / Egresado</h4>
@@ -23,7 +23,7 @@
         </div>
         <div class="row mt-4">
             <div class="col-sm-3">
-                <x-partials.inputs.fut.input label="Documento" disabled  wire:model="documento"/>
+                <x-partials.inputs.fut.input label="Documento" disabled wire:model="documento" />
             </div>
             <div class="col-sm-3">
                 <x-partials.inputs.fut.input label="Telefono" disabled wire:model="telefono" />
@@ -118,8 +118,8 @@
             </div>
         </div>
         <div class="container-fluid mt-5">
-             <h5>Periodo de practicas</h5>
-        </div>        
+            <h5>Periodo de practicas</h5>
+        </div>
         <div class="row mt-3">
             <div class="col-12 col-sm-6">
                 <x-partials.inputs.fut.input label="Fecha Inicio" :disabled="!$isEditable" wire:model="fecha_inicio" />
@@ -129,8 +129,8 @@
             </div>
         </div>
         <div class="container-fluid mt-5">
-             <h5>Calificacion Final</h5>
-        </div>        
+            <h5>Calificacion Final</h5>
+        </div>
         <div class="row mt-4 justify-content-center">
             <div class="col-12 col-sm-3 mt-4">
                 <x-partials.inputs.fut.input label="Nota" :disabled="!$isEditable" wire:model="nota" />
@@ -208,20 +208,46 @@
     </div>
     @script
     <script>
-        Livewire.on('hojas-actualizada', (e) => {
-            Swal.fire({
+        // Usamos este evento para que Livewire no intente evaluar el código internamente
+        document.addEventListener('livewire:navigated', () => {
+
+            // Configuramos los Mixins directamente en el objeto window
+            window.Toast = Swal.mixin({
+                toast: true,
                 position: "top-end",
-                icon: "success",
-                title: "Hojas Actualizadas!",
                 showConfirmButton: false,
-                timer: 1500
+                timer: 3000,
+                timerProgressBar: true
+            });
+
+            window.ElegantModal = Swal.mixin({
+                customClass: {
+                    popup: 'rounded-4 border-0 shadow-lg',
+                    confirmButton: 'btn btn-primary px-4 rounded-pill mx-2',
+                    cancelButton: 'btn btn-light px-4 rounded-pill mx-2',
+                    title: 'fw-bold text-dark'
+                },
+                buttonsStyling: false
+            });
+        }, {
+            once: true
+        }); // '{ once: true }' evita que se dupliquen los listeners
+
+        // Los listeners de eventos de Livewire deben ir aquí
+        $wire.on('hojas-actualizada', () => {
+            window.Toast.fire({
+                icon: "success",
+                title: "Hojas Actualizadas",
+                iconColor: '#0d6efd'
             });
         });
-        Livewire.on('carpeta-completa', (e) => {
-            Swal.fire({
-                title: "Carpeta Revisada!",
+
+        $wire.on('carpeta-completa', () => {
+            window.ElegantModal.fire({
                 icon: "success",
-                draggable: true
+                title: "¡Carpeta Revisada!",
+                text: "Se ha verificado el estado de la carpeta con éxito.",
+                confirmButtonText: "Entendido"
             });
         });
     </script>

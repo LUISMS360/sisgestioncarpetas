@@ -93,6 +93,18 @@
                             </ul>
 
                         </li>
+                         <li
+                            class="sidebar-item  has-sub">
+                            <a href="#" class='sidebar-link'>
+                                <i class="bi bi-send-check-fill"></i>
+                                <span>Memorandos</span>
+                            </a>
+                            <ul class="submenu ">
+                                <li class="submenu-item">
+                                    <a href="{{ route('profesor.memorandos') }}" wire:navigate class="submenu-link">Recibidos</a>
+                                </li>
+                            </ul>
+                        </li>
 
                         <li class="sidebar-title">Estudiantes</li>
 
@@ -175,11 +187,6 @@
 
     <script src="{{ asset('assets/compiled/js/app.js') }}"></script>
 
-
-
-    <!-- Need: Apexcharts -->
-    <script src="{{ asset('assets/extensions/apexcharts/apexcharts.min.js') }}"></script>
-    <script src="{{ asset('assets/static/js/pages/dashboard.js') }}"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
