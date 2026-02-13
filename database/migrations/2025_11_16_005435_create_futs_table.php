@@ -28,9 +28,9 @@ return new class extends Migration
             $table->string('anio_egresado')->nullable();
             $table->text('fundamentacion_pedido');
             $table->string('documentos_adjuntados');
-            $table->string('fecha');
-            $table->string('lugar');
-            $table->string('firma');
+            $table->string('fecha')->nullable();
+            $table->string('lugar')->nullable();
+            $table->string('firma')->nullable();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->enum('turno',['mañana','noche'])->nullable();
             $table->enum('ciclo',['I','II','III','IV','V','VI'])->nullable();
