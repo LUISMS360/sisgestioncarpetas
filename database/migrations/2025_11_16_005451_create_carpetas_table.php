@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();  
             $table->foreignId('profesor_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('fut_id')->constrained('futs')->onDelete('cascade');
-            $table->enum('',['revisado','pendiente','archivada'])->default('pendiente');
+            $table->enum('estado',['revisado','pendiente','archivada'])->default('pendiente');
             $table->foreignId('admin_id')->constrained('users')->onDelete('cascade');
             $table->integer('progreso')->default(0);
             $table->date('fecha')->nullable();

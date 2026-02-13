@@ -34,6 +34,7 @@ class FormProfesor extends Form
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', Rules\Password::defaults()],
             'dni' => ['required', 'digits:8', 'string', 'unique:users,dni'],
+            'rol'=> ['required','in:profesor'],
             'telefono' => ['required', 'starts_with:9', 'digits:9', 'unique:users,telefono']
         ];
     }

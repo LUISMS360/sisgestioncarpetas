@@ -21,7 +21,7 @@ return new class extends Migration
             $table->enum('rol',['admin','profesor','estudiante','egresado']);
             $table->string('dni');
             $table->string('telefono');
-            $table->string('perfil');
+            $table->string('perfil')->nullable();
             $table->timestamps();            
         });
 
