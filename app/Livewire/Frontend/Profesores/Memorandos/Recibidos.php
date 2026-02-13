@@ -52,7 +52,7 @@ class Recibidos extends Component
             ->when($this->anio, function ($q) {
                 $q->whereYear('m.created_at', $this->anio);
             })
-            ->orderBy('id','desc')
+            ->orderBy('m.id','desc')
             ->paginate(10);
     }
 
