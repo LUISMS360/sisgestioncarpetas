@@ -12,6 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('memorandus', function (Blueprint $table) {
+            $table->id();
             $table->foreignId('profesor_id')->constrained('users')->onDelete('cascade');
             $table->string('asunto');
             $table->string('modulo');
