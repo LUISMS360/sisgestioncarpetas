@@ -11,7 +11,7 @@ new class extends Component
     public function with()
     {
         return [
-            'conteo' => Notificacion::where('user_id', Auth::id())->count(),
+            'conteo' => Notificacion::where('estado','pendiente')->where('user_id', Auth::id())->count(),
         ];
     }
 };

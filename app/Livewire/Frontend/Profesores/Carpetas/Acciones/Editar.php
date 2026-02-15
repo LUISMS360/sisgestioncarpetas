@@ -3,6 +3,7 @@
 namespace App\Livewire\Frontend\Profesores\Carpetas\Acciones;
 
 use App\Models\Carpeta;
+use App\Models\Memorandom;
 use App\Models\Notificacion;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
@@ -126,6 +127,7 @@ class Editar extends Component
         Notificacion::create(['user_id'=>$user->id,'titulo'=>'Carpeta Revisada','contenido'=>'Su carpeta con Correspondiente al modulo '.$carpeta->modulo.' ha sido revisada correctamente','emisor_id'=>Auth::id()]);
         //Admin
         Notificacion::create(['user_id'=>$this->carpeta->admin->id,'titulo'=>'Carpeta Supervisada','contenido'=>'Se ha culminado con la supervision de la carpeta '.$carpeta->id,'emisor_id'=>Auth::id()]);
+        Memorandom::create([]);
         $carpeta->estado = 'revisado';
         $carpeta->save();
         $this->dispatch('carpeta-completa');

@@ -32,6 +32,8 @@ use App\Livewire\Frontend\Admin\Memorandos\Profesor\Ver as MemorandoProfesor;
 use App\Livewire\Frontend\Profesores\Memorandos\Recibidos as MemorandosRecibidos;
 use App\Livewire\Frontend\Profesores\Memorandos\Ver as VerMemorando;
 use App\Http\Controllers\Pdfs\PdfMemorandoController;
+use App\Livewire\Frontend\Admin\Estudiantes\Todos as Estudiantes;
+use App\Livewire\Frontend\Admin\Memorandos\Recibidos as MemorandosRecibidosAdmin;
 use Illuminate\Support\Facades\Route;
 
 
@@ -57,7 +59,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/memorandos/profesor/{id}',MemorandoProfesor::class)->middleware('is_admin')->name('admin.memorando.profesor');
         Route::get('/memorandos/memorando/ver/{id}',[PdfMemorandoController::class,'generarPdf'])->middleware('is_admin')->name('admin.generar.pdf');
         Route::get('/memorandos/memorando/descargar/{id}',[PdfMemorandoController::class,'descargarPdf'])->middleware('is_admin')->name('admin.descargar.pdf');
-    });
+        Route::get('/estudiantes-egresados/estudiantes',Estudiantes::class)->middleware('is_admin')->name('admin.estudiantes');
+        Route::get('/momorandos/recibidos',MemorandosRecibidosAdmin::class)->middleware('is_admin')->name('admin.memorandos.recibidos');
+    });    
     //Rutas para Estudiantes
     Route::prefix('estudiantes')->group(function () {
         Route::get('/dashboard', DashboardEstudiantes::class)->name('estudiante.dashboard')->middleware('is_estudiante');

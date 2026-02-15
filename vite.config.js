@@ -8,4 +8,12 @@ export default defineConfig({
             refresh: true,
         }),
     ],
+    server: {
+        host: '192.168.18.134', // Tu IP local
+        port: 5173,
+        cors: true, // <--- ESTO ACTIVA LOS HEADERS CORS
+        hmr: {
+            host: '192.168.18.134',
+        },
+    },
 });

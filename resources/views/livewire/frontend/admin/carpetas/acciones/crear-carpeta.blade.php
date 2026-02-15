@@ -109,7 +109,7 @@
             <span class="badge bg-primary-subtle text-primary rounded-pill">Resultados: {{ $this->futs->count() }}</span>
         </div>
 
-        <div class="table-responsive ">
+        <div class="table-responsive">
             <table class="table table-hover align-middle mb-0">
                 <thead class="">
                     <tr>
